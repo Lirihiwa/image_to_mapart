@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мапарт</title>
+    <style>
+        div {
+            max-width: 100%;
+            max-height: 400px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Lirihiwa</h1>
+        </div>
+
+    </header>
+    <main>
+        <div class="slider-container">
+            <input id="slider" type="range" min="0" max="255" value="128">
+            <label for="slider"><span id="sliderValue">128</span></label>
+        </div>
+
+        <input type="file" id="userFile" accept="image/*" multiple>
+        <button onclick="processImage()">Преобразовать</button>
+        <div id="result" style="margin-top: 20px;">
+            <!--Контейнер для изображения-->
+        </div>
+    </main>
+
+
+    <script>
+        const slider = document.getElementById("slider");
+        const sliderValue = document.getElementById("sliderValue")
+
+        slider.addEventListener("input", () => {
+            sliderValue.textContent = slider.value;
+        });
+
+        async function processImage(){
+            const image = document.getElementById("userFile").files[0]
+            const value = slider.value
+
+            const formData = new FormData()
+
+            formData.append("file", image)
+            formData.append("value", value)
+
+            const response = await fetch("/process-image", {
+                    method: "POST",
+                    body: formData
+                });
+
+            const result = await response.json();
+            const img = document.createElement("img")
+            img.src = `data:image/png;base64,${result.image}`;
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("result").appendChild(img);
+        }
+
+        document.getElementById("userFile").addEventListener("change", processImage);
+        document.getElementById("slider").addEventListener("change", processImage)
+    </script>
+</body>
+</html>
