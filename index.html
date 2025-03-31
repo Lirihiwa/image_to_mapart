@@ -3,46 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Мапарт</title>
-    <style>
-        div {
-            max-width: 100%;
-            max-height: 400px;
-            margin-top: 10px;
-        }
-        button {
-            padding: 8px 16px;
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
-    <header>
-        <div>
-            <h1>Lirihiwa</h1>
-        </div>
+    <div class="slider-container">
+        <input id="slider" type="range" min="0" max="255" value="128">
+        <label for="slider">
+            <span id="sliderValue">128</span>
+        </label>
+    </div>
 
-    </header>
-    <main>
-        <div class="slider-container">
-            <input id="slider" type="range" min="0" max="255" value="128">
-            <label for="slider"><span id="sliderValue">128</span></label>
-        </div>
+    <div class="slider-container">
+        <input id="height" type="range" min="1" max="10" value="1">
+        <label for="height">
+            <span id="mapart_height">1</span>
+        </label>
+    </div>
 
-        <input type="file" id="userFile" accept="image/*" multiple>
-        <button onclick="processImage()">Преобразовать</button>
-        <div id="result" style="margin-top: 20px;">
+    <div class="slider-container">
+        <input id="width" type="range" min="1" max="10" value="1">
+        <label for="width">
+            <span id="mapart_width">1</span>
+        </label>
+    </div>
+
+    <input type="file" id="userFile" accept="image/*" multiple>
+    <button onclick="processImage()">Преобразовать</button>
+    <div id="result" style="margin-top: 20px;">
             <!--Контейнер для изображения-->
-        </div>
-    </main>
+    </div>
 
 
     <script>
         const slider = document.getElementById("slider");
         const sliderValue = document.getElementById("sliderValue")
 
+        const mp_height = document.getElementById("height")
+        const height_value = document.getElementById("mapart_height")
+
+        const mp_width = document.getElementById("width")
+        const width_value = document.getElementById("mapart_width")
+
         slider.addEventListener("input", () => {
             sliderValue.textContent = slider.value;
         });
+
+        mp_height.addEventListener("input", () => {
+            height_value.textContent = mp_height.value;
+        })
+
+        mp_width.addEventListener("input", () => {
+            width_value.textContent = mp_width.value;
+        })
 
         async function processImage(){
             const image = document.getElementById("userFile").files[0]
